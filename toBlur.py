@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Correctly Blurring png file but not jpg file
 
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
