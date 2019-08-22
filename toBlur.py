@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
-# Correctly Blurring png file but not jpg file
 
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
 
-img = mpimg.imread('sample.jpg')
+# filename = 'gfg.png'
+filename = 'dog.jpg'
+img = mpimg.imread(filename)
 plt.imshow(img)
 
+# Normalize if jpg
+if filename.endswith('.jpg'):
+    img = np.true_divide(img, 256)
+
 # Parameters 
-f = 3
+f = 7
 n_H = img.shape[0]
 n_W = img.shape[1] 
 n_C = img.shape[2]
@@ -59,4 +64,4 @@ def conv_forward(input_img, blur_filter):
 
 blur = conv_forward(img, blur_filter)
 plt.imshow(blur)
-mpimg.imsave('sampleBlur.jpg', blur)
+mpimg.imsave('dog.jpg', blur)
