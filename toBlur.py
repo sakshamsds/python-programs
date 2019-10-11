@@ -1,5 +1,17 @@
 # -*- coding: utf-8 -*-
 
+'''
+import cv2
+
+img = cv2.imread('images.jpg')
+
+blurImg = cv2.blur(img, (2, 2))
+cv2.imshow('blurred image', blurImg)
+
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+'''
+
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
