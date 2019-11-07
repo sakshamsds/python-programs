@@ -1,0 +1,152 @@
+1.	Data Creation and Insertion Time
+
+Approach Used: Simultaneously create the data and push it into the index
+
+1k data creation and insertion: 148 s
+10k data creation and insertion: 1482 s = 24.7 minutes
+100k data creation and insertion: 246 minutes = 4 hrs
+
+2.	Mapping used
+
+Number of shard: 1
+Number of replicas: 0
+Column_Name	Type
+Station_id	Long
+Time	Date
+Location	Geo_point
+Station_code	Text
+Column6	Text
+Column7	Text
+Column8	Text
+Column9	Text
+Column10	Text
+Column11	Text
+Column12 	Text
+Column13	Text
+Column14	Text
+Column15	Text
+
+
+
+
+
+
+
+
+3.	Using bulk approach AND Polygon Query Time wrt no. of documents
+
+Approach Used: Create the whole data first them push it using helpers.bulk command
+
+	4 points polygon used
+	
+
+	Creation Time	Insertion Time	Polygon Query Time( first time execution)	Polygon Query Time (after first time execution	Number of points retrieved
+1k data	46ms	86ms	31ms	15ms	443
+10k data	414ms	2.11s	15ms	15ms	687
+100k data	3.84s	18.72s	47ms	15ms	598
+1M data	40.79s	197s = 3m 17s	15ms	15ms	518
+10M data	408s = 6m 48s	2206s = 36m 46s	22ms	15ms	659
+100M data	~1hr	~7hrs			
+
+* Polygon Query Execution Time is almost constant.
+** Number of Points retrieved is limited to 10,000, due to memory consumption but can be changed.
+***100M data was not attempted because of the estimated time taken for insertion.
+
+
+ 
+
+
+
+res = helpers.bulk(es, data, chunk_size=1000)
+1M data –
+- Chunk size = 500, Insertion time= 310s
+- Chunk size = 1,000, Insertion time =197s
+ 	- Chunk size = 10,000, Insertion time = 101s
+	- Chunk size = 100,000, Insertion time = 89s
+	- Chunk size = 1,000,000, Insertion time = data too large
+
+*=> more the chunk size, faster the insertion time
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4.	Polygon Query Time wrt size of Polygon
+
+	10M data used
+	Almost same area of polygon was used so points retrieved ~200 are same for every polygon
+
+
+Size of Polygon	Query Execution Time
+4	378ms
+8	15s
+16	15s
+32	15s
+50	15s
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+5.	Polygon Query Time wrt number of points retrieved
+
+	10M data used
+	4 point polygon used
+
+Number of Points Retrieved	Query Execution Time
+34	4ms
+163	15ms
+243	15ms
+943	22ms
+3021	15ms
+9151	15ms
+
+*Till 10,000 points query execution time seems to be constant
+**Usually first time executing the query takes more time which is also usually less than a    second.
+
+
+ 
+
+
+
+6.	Time Based query 
+
+	10M data used
+	4 point polygon used
+
+Time Range	Query Execution Time
+1s	1.31s
+1m	231ms
+1hr	251ms
+1d	162ms
+1M	385ms
+6M	31ms
+1Y	18ms
+
+*Not much change according to time range used ~constant
+
+
+
+ 
