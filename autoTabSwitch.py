@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+"""
+Created on Thu Feb 13 18:13:53 2020
+
+@author: Sakshamdeep Singh
+"""
+
 import time
 from selenium import webdriver
 
