@@ -1,23 +1,25 @@
 # -*- coding: utf-8 -*-
 
-"""
-Created on Thu Feb 13 12:56:36 2020
-
-@author: Saksham
-"""
-
 import time
 from selenium import webdriver
 
-#options = webdriver.ChromeOptions()
+options = webdriver.ChromeOptions()
+options.add_experimental_option("excludeSwitches", ["enable-automation"])
+options.add_experimental_option('useAutomationExtension', False)
 #options.add_argument("user-data-dir=C:\\Users\\Saksham\\AppData\\Local\\Google\\Chrome\\User Data\\Default")
 
-#path_to_chromedriver = r'C:\Users\Saksham\Desktop\chromedriver.exe'
-#driver = webdriver.Chrome(options = options, executable_path = path_to_chromedriver)
-driver = webdriver.Chrome()
+path_to_chromedriver = r'C:\Users\Saksham\Desktop\auto tab switch\chromedriver.exe'
+driver = webdriver.Chrome(options = options, executable_path = path_to_chromedriver)
+
+def startTab(tab, url):
+    js = "window.open('about:blank', '" +tab+ "');"
+    driver.execute_script(js)
+    driver.switch_to.window(tab)
+    driver.get(url)
 
 # Sensor API Service tab
-driver.get('https://www.goodreads.com/')
+driver.get('https://www.google.com')
+time.sleep(10)
 
 '''
 username = driver.find_element_by_id("login_id")
@@ -28,24 +30,19 @@ password.send_keys("my_password")
 
 driver.find_element_by_name("submit").click()
 '''
-# first tab
-driver.execute_script("window.open('about:blank', 'tab2');")
-driver.switch_to.window("tab2")
-driver.get('https://www.cricbuzz.com/')
 
-# second tab
-driver.execute_script("window.open('about:blank', 'tab3');")
-driver.switch_to.window("tab3")
-driver.get('https://www.google.com/')
+# Sensor Ingestion Service tab
+startTab('tab2', 'https://stackoverflow.com/questions')
 
-# third tab
-driver.execute_script("window.open('about:blank', 'tab4');")
-driver.switch_to.window("tab4")
-driver.get('https://stackoverflow.com/questions')
+# Sensor Subscription Service tab
+startTab('tab3', 'https://www.google.com/')
 
-// main code
+# Historic Ingestion Service tab
+startTab('tab4', 'https://www.cricbuzz.com/')
+
 while True:
     Windows = driver.window_handles
     for window in Windows:
+        driver.refresh()
         driver.switch_to.window(window)
-        time.sleep(5)
+        time.sleep(15)
