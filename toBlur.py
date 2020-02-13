@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+"""
+Created on Sun Oct 13 15:56:36 2019
+
+@author: sakshasi
+"""
+
 '''
 import cv2
 
@@ -26,7 +32,7 @@ if filename.endswith('.jpg'):
     img = np.true_divide(img, 256)
 
 # Parameters 
-f = 7
+f = 7       # blurfactor
 n_H = img.shape[0]
 n_W = img.shape[1] 
 n_C = img.shape[2]
