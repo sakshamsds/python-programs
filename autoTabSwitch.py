@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Created on Thu Feb 13 18:13:53 2020
+Created on Thu Feb 13 18:35:02 2020
 
 @author: Sakshamdeep Singh
 """
@@ -9,46 +9,51 @@ Created on Thu Feb 13 18:13:53 2020
 import time
 from selenium import webdriver
 
-options = webdriver.ChromeOptions()
-options.add_experimental_option("excludeSwitches", ["enable-automation"])
-options.add_experimental_option('useAutomationExtension', False)
-#options.add_argument("user-data-dir=C:\\Users\\Saksham\\AppData\\Local\\Google\\Chrome\\User Data\\Default")
-
-path_to_chromedriver = r'C:\Users\Saksham\Desktop\auto tab switch\chromedriver.exe'
-driver = webdriver.Chrome(options = options, executable_path = path_to_chromedriver)
+def setOptions():
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
+    #options.add_argument("user-data-dir=C:\\Users\\Saksham\\AppData\\Local\\Google\\Chrome\\User Data\\Default")
+    return options
+    
+def setDriver(options):
+    path_to_chromedriver = r'C:\Users\Saksham\Desktop\auto tab switch\chromedriver.exe'
+    driver = webdriver.Chrome(options = options, executable_path = path_to_chromedriver)
+    return driver
 
 def startTab(tab, url):
-    js = "window.open('about:blank', '" +tab+ "');"
-    driver.execute_script(js)
+    driver.execute_script("window.open('{}', '{}');".format(url, tab))
     driver.switch_to.window(tab)
-    driver.get(url)
+    time.sleep(3)
 
-# Sensor API Service tab
-driver.get('https://www.google.com')
-time.sleep(10)
+def startAutoSwitch():
+    # Sensor API Service tab
+    driver.get('https://stackoverflow.com/questions/')
+    time.sleep(10)          # time needed to enter the password
+    '''
+    username = driver.find_element_by_id("login_id")
+    password = driver.find_element_by_id("login_password")
+    username.send_keys("my_username")
+    password.send_keys("my_password")
+    driver.find_element_by_name("submit").click()
+    '''
+    startTab('tab2', 'https://www.cricbuzz.com/')
+    startTab('tab3', 'https://www.geeksforgeeks.org/')
+    startTab('tab4', 'https://www.youtube.com/')
+    
+    #switching starts here
+    while True:
+        Windows = driver.window_handles
+        for window in Windows:
+            driver.refresh()
+            driver.switch_to.window(window)
+            time.sleep(15)
+        
+if __name__ == '__main__':
+    options = setOptions()
+    driver = setDriver(options)
+    try:
+        startAutoSwitch()
+    except:
+        print('Exception Caught or Browser Closed')
 
-'''
-username = driver.find_element_by_id("login_id")
-password = driver.find_element_by_id("login_password")
-
-username.send_keys("my_username")
-password.send_keys("my_password")
-
-driver.find_element_by_name("submit").click()
-'''
-
-# Sensor Ingestion Service tab
-startTab('tab2', 'https://stackoverflow.com/questions')
-
-# Sensor Subscription Service tab
-startTab('tab3', 'https://www.google.com/')
-
-# Historic Ingestion Service tab
-startTab('tab4', 'https://www.cricbuzz.com/')
-
-while True:
-    Windows = driver.window_handles
-    for window in Windows:
-        driver.refresh()
-        driver.switch_to.window(window)
-        time.sleep(15)
