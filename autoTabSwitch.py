@@ -13,6 +13,8 @@ import random
 
 def setOptions():
     options = webdriver.ChromeOptions()
+    #options.add_argument("--window-size=1920,1080")
+    options.add_argument("--start-maximized")
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_experimental_option('useAutomationExtension', False)
     #options.add_argument("user-data-dir=C:\\Users\\Saksham\\AppData\\Local\\Google\\Chrome\\User Data\\Default")
@@ -31,6 +33,8 @@ def startTab(tab, url):
 def startAutoSwitch():
     # Sensor API Service tab
     driver.get('https://stackoverflow.com/questions/')
+    driver.execute_script("document.body.style.zoom='125%'")
+    driver.fullscreen_window()
     time.sleep(10)          # time needed to enter the password
     
     '''
