@@ -33,7 +33,6 @@ def startTab(tab, url):
 def startAutoSwitch():
     # Sensor API Service tab
     driver.get('https://stackoverflow.com/questions/')
-    driver.execute_script("document.body.style.zoom='125%'")
     driver.fullscreen_window()
     time.sleep(10)          # time needed to enter the password
     
@@ -55,6 +54,7 @@ def startAutoSwitch():
         for window in Windows:
             driver.refresh()
             driver.switch_to.window(window)
+            driver.execute_script("document.body.style.zoom='125%'")
             moveMouseRandomly()
             time.sleep(15)
             
